@@ -35,6 +35,11 @@ namespace Business.Concrete
         {
             _brandDal.Delete(brand);
         }
+
+        public Brand GetById(int brandId)
+        {
+            return _brandDal.Get(b => b.BrandId == brandId);
+        }
     }
 }
 
