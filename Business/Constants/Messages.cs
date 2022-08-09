@@ -44,6 +44,14 @@ namespace Business.Constants
         public static string CustomerNameInvalid = "Müşteri ismi geçersiz";
         public static string CustomersListed = "Müşteriler listelendi.";
 
+        public static string AuthorizationDenied = "Yetkiniz yoktur";
+        public static string UserRegistered = "Kayıt oldu";
+        public static string UserNotFound = "Kullanıcı bulunamadı";
+        public static string PasswordError = "Parola hatası";
+        public static string SuccessfulLogin = "Başarılı giriş";
+        public static string UserAlreadyExists = "Kullanıcı mevcut";
+        public static string AccessTokenCreated = "Access token başarıyla oluşturuldu";
+
         public static string MaintenanceTime = "Sistem bakımda.";
 
     }
