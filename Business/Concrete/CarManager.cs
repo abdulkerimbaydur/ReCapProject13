@@ -2,6 +2,9 @@
 using Business.BusinessAspects.Autofac;
 using Business.Constants;
 using Business.ValidationRules.FluentValidation;
+using Core.Aspect.Autofac.Caching;
+using Core.Aspect.Autofac.Transaction;
+using Core.Aspects.Autofac.Performance;
 using Core.Aspects.Autofac.Validation;
 using Core.Entities;
 using Core.Utilities.Results;
@@ -28,6 +31,7 @@ namespace Business.Concrete
         }
         [SecuredOperation("car.add,admin")]
         [ValidationAspect(typeof(CarValidator))]
+        [CacheRemoveAspect("ICarService.Get")]
         public IResult Add(Car car)
         {
             
@@ -41,12 +45,13 @@ namespace Business.Concrete
             return new SuccessResult(Messages.CarDeleted);
         }
 
-
+        [CacheAspect]
         public IDataResult<List<Car>> GetAll()
         {
             return new SuccessDataResult<List<Car>>(_carDal.GetAll(), Messages.CarsListed);
         }
-
+        [CacheAspect]
+        [PerformanceAspect(5)]
         public IDataResult<Car> GetById(int carId)
         {
             return new SuccessDataResult<Car>(_carDal.Get(c => c.Id == carId));
@@ -67,10 +72,18 @@ namespace Business.Concrete
         {
             return new SuccessDataResult<List<Car>> (_carDal.GetAll(c => c.ColorId == id));
         }
-
+        [ValidationAspect(typeof(CarValidator))]
+        [CacheRemoveAspect("ICarService.Get")]
         public IResult Update(Car car)
         {
             _carDal.Update(car);
+            return new SuccessResult(Messages.CarUpdated);
+        }
+        [TransactionScopeAspect]
+        public IResult TransactionalOperation(Car car)
+        {
+            _carDal.Update(car);
+            _carDal.Add(car);
             return new SuccessResult(Messages.CarUpdated);
         }
     }

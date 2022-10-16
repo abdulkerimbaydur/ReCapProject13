@@ -23,6 +23,7 @@ namespace Business.Abstract
         IDataResult<List<Car>> GetCarsByColorId(int id);
         IDataResult<Car> GetById(int carId);
         IDataResult<List<CarDetailDto>> GetCarDetails();
+        IResult TransactionalOperation(Car car);
 
     }
 }
